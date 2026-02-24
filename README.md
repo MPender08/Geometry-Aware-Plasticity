@@ -2,7 +2,7 @@
 
 ### Thermodynamic Weight Updates in Non-Euclidean Hardware
 
-Official implementation of the paper: "Geometry-Aware Plasticity: Thermodynamic Weight Updates in Non-Euclidean Hardware" 
+Official implementation of the paper: "Geometry-Aware Plasticity: Thermodynamic Weight Updates in Non-Euclidean Hardware" https://doi.org/10.5281/zenodo.18761137
 
 GAP is a biologically plausible learning algorithm designed for Dynamically Gated Analog Crossbars (DGAC). It bridges the gap between the energy efficiency of local Hebbian learning and the global optimization power of backpropagation by utilizing dynamic Riemannian curvature.
 
