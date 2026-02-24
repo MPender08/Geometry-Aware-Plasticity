@@ -36,7 +36,7 @@ python run_brain_sim.py
 ## Documentation
 For the complete mathematical framework, please see the full manuscript included in this repository: geometry_aware_plasticity.pdf.
 
-To see the Manifold Chip DGAC architecture this algorithm is designed for, visit either the companion repository or the Zenodo page:
+To see the Manifold Chip DGAC architecture, visit either the companion repository or the Zenodo page:
 
 https://github.com/MPender08/manifold-chip-architecture
 
