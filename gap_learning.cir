@@ -1,0 +1,50 @@
+* Geometry-Aware Plasticity (GAP): Hardware Translation
+* Demonstrating the Thermodynamic Structural Burn and Memristor Saturation
+
+* 1. THE STDP LEARNING SIGNAL (Local Gradient)
+* Alternating potentiation (+1V) and depression (-1V) requests.
+V_stdp n_stdp 0 PULSE(1 -1 0 1m 1m 20m 40m)
+
+* 2. THE MACROSCOPIC TOPOLOGY (Network Curvature)
+* Gamma starts Euclidean (0.1), then VIP overrides into Hyperbolic Plunge (1.0)
+V_gamma n_gamma 0 PULSE(0.1 1.0 40m 5m 5m 30m 150m)
+
+* 3. THE HYSTERETIC SHIELD (Constraint 1)
+* Locks the learning state open only when Gamma crosses the threshold.
+* Modeled here as the clean logic trigger from the forward-pass Schmitt comparator.
+V_state n_state 0 PULSE(0 1 42.5m 1u 1u 25m 150m)
+
+* 4. THE GEOMETRIC MULTIPLIER (Phi)
+* Calculates the Riemannian curvature (kappa = -5 * gamma)
+B_kappa n_kappa 0 V=-5.0*v(n_gamma)
+* Phi = 1 + alpha * state * exp(-beta * kappa)
+B_Phi n_phi 0 V=1.0+(10.0*v(n_state)*exp(-1.0*v(n_kappa)))
+
+* 5. ASYMMETRIC GAIN & PHYSICAL GOVERNOR (Constraints 2 & 3)
+* W_max = +2.0V, W_min = -2.0V
+* POTENTIATION: Amplified by Phi, bounded by physical saturation (2.0 - W).
+B_pot n_pot 0 V=max(0,v(n_stdp))*v(n_phi)*max(0,2.0-v(n_mem))
+
+* DEPRESSION: Dampened by epsilon (0.05), ignored by Phi, bounded by (W - -2.0).
+B_dep n_dep 0 V=min(0,v(n_stdp))*0.05*max(0,v(n_mem)+2.0)
+
+* 6. MEMRISTOR PHYSICAL STATE (The Analog Oxide Layer)
+* A capacitor accumulates the current to act as the memristor conductance weight.
+B_update 0 n_mem I=(v(n_pot)+v(n_dep))*1m
+C_mem n_mem 0 1m IC=0.1
+R_leak n_mem 0 1G
+
+* 7. SIMULATION COMMANDS
+.tran 100u 120m uic
+.control
+run
+* Plot 1: The Input Gradients vs The Macroscopic Geometry
+plot v(n_stdp) v(n_gamma) title 'STDP Gradient vs Macroscopic Gamma'
+* Plot 2: The Geometric Multiplier (Notice the violent exponential spike)
+plot v(n_phi) title 'Geometric Multiplier (Phi)'
+* Plot 3: The Memristor Conductance (The Structural Burn & Saturation)
+plot v(n_mem) title 'Memristor State (W_max = 2.0V)'
+
+wrdata gap_learning_data.txt v(n_stdp) v(n_gamma) v(n_phi) v(n_mem)
+.endc
+.end
