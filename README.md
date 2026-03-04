@@ -18,6 +18,8 @@ GAP is a biologically plausible learning algorithm designed for Dynamically Gate
 
 * **Asymmetric Gain:** Protects baseline Euclidean memories during high-energy structural burns.
 
+![GAP Learning Results](gap_learning_results.png)
+
 ## Quick Start
 
 1. Clone the repository:
@@ -33,6 +35,13 @@ pip install torch geoopt matplotlib numpy
 ```bash
 python run_brain_sim.py
 ```
+NGSpice is required to run the netlist (`gap_learning.cir`).
+
+To generate the figure from the NGSpice data, make sure `gap_learning_data.txt` and `plot_gap_data.py` are in the same folder:
+```bash
+python plot_gap_data.py
+```
+
 ## Documentation
 For the complete mathematical framework, please see the full manuscript included in this repository: geometry_aware_plasticity.pdf.
 
